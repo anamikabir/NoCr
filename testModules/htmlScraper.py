@@ -1,3 +1,64 @@
 from lxml import html
 import requests
 
+#URL to be scraped 
+theUrl = "https://sfbay.craigslist.org/search/sfc/roo?hasPic=1&postedToday=1&bundleDuplicates=1&search_distance=2&postal=94103&min_price=800&max_price=1800&availabilityMode=0&private_room=1"
+
+# use request libraray to get the page contents and lxml parser to get a tree of the html contents
+page = requests.get(theUrl)
+tree = html.fromstring(page.content)
+#print page.content
+
+#List to store all post info
+FinalList = []
+
+#Retrive unique listings and total number of unique listings
+Results = tree.xpath('//li[@class="result-row"]')
+print len(Results)
+
+#for each unique listing retrieve URL , postid , title, price and neighbourhood information
+for res in Results:
+    # Create a Dictionary of post contents
+    D={}
+    # To retrieve link to post , unique post id and title of the post
+    LinkURL = res.xpath('./p[@class="result-info"]/a[@class="result-title hdrlnk"]')
+    if len(LinkURL) == 1:
+        D['postid']=LinkURL[0].attrib['data-id']
+        D['title']=LinkURL[0].text
+        D['url']=" "+LinkURL[0].attrib['href']+" "
+    # To retrieve price info from result -> Won't be included if missing
+    Price = res.xpath('./p[@class="result-info"]/span[@class="result-meta"]/span[@class="result-price"]/text()')
+    if len(Price) == 1:
+        D['price']= Price[0]
+    # To retrieve Neighbourhood info -> Won't be included if missing
+    Neighbourhood = res.xpath('./p[@class="result-info"]/span[@class="result-meta"]/span[@class="result-hood"]/text()')
+    if len(Neighbourhood) == 1:
+        D['hood']= Neighbourhood[0][2:-1]
+    #Append if not an empty post (Not really possible -- just a precautionary measure)
+    if len(D) > 0 :
+        FinalList.append(D)
+
+#Get list of duplicate listings (just to verify that number of unique results + number of duplicates = total number of listings
+Duplicate = tree.xpath('//li[@class="result-row duplicate-row"]')
+print len(Duplicate)
+
+#Get total number of listings of URL
+Listings = tree.xpath('//a[@class="result-title hdrlnk"]')
+print len(Listings)
+
+#for links in Listings:
+#    print links.attrib['href'] + "\tpost id: "+links.attrib['data-id']+"\ttitle: "+links.text
+#Prices = tree.xpath('//span[@class="result-meta"]/span[@class="result-price"]/text()')
+#print len(Prices)
+#print Prices
+#Neighbourhood = tree.xpath('//span[@class="result-meta"]/span[@class="result-hood"]/text()')
+#print len(Neighbourhood)
+
+"""
+if len(Listings)==len(Prices)==len(Neighbourhood):
+    for i in xrange(len(Listings)):
+	print Listings[i].attrib['href'] +"\t"+Listings[i].text+ "\t" + Prices[i] + "\t" + Neighbourhood[i][2:-1]
+"""
+# For printing the retrieved post information
+for posts in FinalList:
+    print str(posts) + "\n"
