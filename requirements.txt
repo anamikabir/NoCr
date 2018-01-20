@@ -4,3 +4,6 @@ Flask==0.12.2
 #Web Scraping
 lxml==4.1.1
 requests==2.18.4
+
+#scheduling recurring events
+apscheduler=3.5.1
