@@ -6,3 +6,4 @@ testModules/credentials.txt
 flaskapp/flaskapp.pyc
 flaskapp/credentials.txt
 flaskapp/contacts.txt
+flaskapp/__init__.pyc
