@@ -4,3 +4,5 @@ testModules/contacts.txt
 testModules/credentials.txt
 
 flaskapp/flaskapp.pyc
+flaskapp/credentails.txt
+flaskapp/contacts.txt
