@@ -48,6 +48,7 @@ def Get_All_Listings(theUrl):
 
     return FinalList    
 
+"""
 #URL to be scraped 
 theUrl = "https://sfbay.craigslist.org/search/sfc/roo?hasPic=1&postedToday=1&bundleDuplicates=1&search_distance=2&postal=94103&min_price=800&max_price=1800&availabilityMode=0&private_room=1"
 
@@ -56,3 +57,4 @@ ResList = Get_All_Listings(theUrl)
 # For printing the retrieved post information
 for posts in ResList:
     print str(posts) + "\n"
+"""
