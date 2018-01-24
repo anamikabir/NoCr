@@ -15,6 +15,8 @@ def get_new_posts(theUrl):
             OurList[posts['postid']]= currDate
             print "This happened"
             # send email operation
+            if 'title' in posts:
+                print posts['title']+"\n"
     print str(OurList)
     # Get current date so application can delete enteries belong to previous day
     currMonth = DateToday.month 
