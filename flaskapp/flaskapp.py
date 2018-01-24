@@ -1,5 +1,6 @@
 import time
 import atexit
+import datetime
 
 from flask import Flask
 
@@ -12,6 +13,8 @@ from htmlScraper import Get_All_Listings
 #To import functionality to create and send an email notification
 from emailHelper import email_helper
 
+import logging
+logging.basicConfig()
 
 currentListings = {}
 
@@ -22,13 +25,15 @@ def send_notifications():
     res =  Get_All_Listings(theUrl)
     DateToday = datetime.datetime.now()
     currDate = DateToday.day
+    print len(res)
     for posts in res:
-        if posts['postid'] in OurList:
-            OurList[posts['postid']]= currDate
-            #print "Nothing happened"
+        if posts['postid'] in currentListings:
+            currentListings[posts['postid']]= currDate
+            print "Nothing happened"
         else:
-            OurList[posts['postid']]= currDate
-            #print "Email notification"
+            currentListings[posts['postid']]= currDate
+            print "Email notification"
+            """
             myEmailHelper = email_helper()
             BodyContents = "Hi {}!\n\nThis is a notification email.\n\n"
             EmailSubject = posts['title']
@@ -38,9 +43,11 @@ def send_notifications():
             if 'hood' in posts:
                 BodyContents += "Neighbourhood: "+posts['hood']+"\n"
             BodyContents += "\nLink to Follow: " +posts['url']+"\n\nRegards,\nNoCr Notification Team\n"
-            #Sending the email
+            print "Sending the email"+ EmailSubject
             myEmailHelper.create_mail_alert(EmailSubject,BodyContents)
-
+            """
+    print "Done with all records"
+    print str(currentListings)
 
 def del_old_contents():
     print "Running second job at a different interval"
@@ -51,9 +58,9 @@ scheduler = BackgroundScheduler()
 #scheduler.start()
 scheduler.add_job(
     func=send_notifications,
-    trigger=IntervalTrigger(minutes=2),
+    trigger=IntervalTrigger(minutes=1),
     id='notification_job',
-    name='Send notification for new posts every 30 mins',
+    name='Send notification for new posts every 5 mins',
     replace_existing=True)
 
 scheduler.add_job(
