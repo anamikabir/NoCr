@@ -32,12 +32,12 @@ def send_notifications():
             myEmailHelper = email_helper()
             BodyContents = "Hi {}!\n\nThis is a notification email.\n\n"
             EmailSubject = posts['title']
-            BodyContents + = posts['title']+"\n"
+            BodyContents += posts['title']+"\n"
             if 'price' in posts:
-                BodyContents + = "Rent (Price in USD): "+posts['price']+"\n"
+                BodyContents += "Rent (Price in USD): "+posts['price']+"\n"
             if 'hood' in posts:
-                BodyContents + = "Neighbourhood: "+posts['hood']+"\n"
-            BodyContents + = "\nLink to Follow: " +posts['url']+"\n\nRegards,\nNoCr Notification Team\n"
+                BodyContents += "Neighbourhood: "+posts['hood']+"\n"
+            BodyContents += "\nLink to Follow: " +posts['url']+"\n\nRegards,\nNoCr Notification Team\n"
             #Sending the email
             myEmailHelper.create_mail_alert(EmailSubject,BodyContents)
 
@@ -51,7 +51,7 @@ scheduler = BackgroundScheduler()
 #scheduler.start()
 scheduler.add_job(
     func=send_notifications,
-    trigger=IntervalTrigger(minutes=5),
+    trigger=IntervalTrigger(minutes=2),
     id='notification_job',
     name='Send notification for new posts every 30 mins',
     replace_existing=True)
