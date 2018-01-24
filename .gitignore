@@ -3,7 +3,9 @@ testModules/test.py
 testModules/contacts.txt
 testModules/credentials.txt
 testModules/*.pyc
+testModules/PostList.txt
 
 flaskapp/*.pyc
 flaskapp/credentials.txt
 flaskapp/contacts.txt
+flaskapp/PostList.txt
