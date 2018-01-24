@@ -40,7 +40,7 @@ print zc
 theUrl = "https://sfbay.craigslist.org/search/sfc/roo?hasPic=1&postedToday=1&bundleDuplicates=1&search_distance=2&postal=94103&min_price=800&max_price=1800&availabilityMode=0&private_room=1"
 
 get_new_posts(theUrl)
-OurList['2133788862']=12
+#OurList['2133788862']=12
 OurList = del_old_entries()
 print str(OurList)
 
