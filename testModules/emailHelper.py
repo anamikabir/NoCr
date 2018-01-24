@@ -57,6 +57,7 @@ class email_helper:
         s.quit()
 
 
-
+"""
 myEmailHelper = email_helper()
 myEmailHelper.create_mail_alert("Alert","Hi {}!\nThis is a test email.\nHere is the link you wanted:\nhttps://www.python.org")
+"""
