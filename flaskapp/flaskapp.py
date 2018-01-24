@@ -24,7 +24,7 @@ scheduler.add_job(
 
 scheduler.add_job(
     func=del_old_contents,
-    trigger=IntervalTrigger(seconds=15),
+    trigger=IntervalTrigger(hours=24),
     id='del_old_dict_job',
     name='Delete older post enteries - runs once every 24 hours',
     replace_existing=True)
