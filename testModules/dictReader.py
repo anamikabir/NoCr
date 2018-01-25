@@ -20,7 +20,4 @@ def readfile():
 
 print len(D1)
 writefile()
-D1['2133788862']=25
-print len(D1)
-writefile()
 readfile()
