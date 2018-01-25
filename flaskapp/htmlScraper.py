@@ -5,7 +5,11 @@ import requests
 
 def Get_All_Listings(theUrl):
     # use request libraray to get the page contents and lxml parser to get a tree of the html contents
-    page = requests.get(theUrl)
+    try:
+        page = requests.get(theUrl)
+    except:
+        print "Exception handled"
+        return []
     tree = html.fromstring(page.content)
     #print page.content
 
@@ -14,7 +18,7 @@ def Get_All_Listings(theUrl):
 
     #Retrive unique listings and total number of unique listings
     Results = tree.xpath('//li[@class="result-row"]')
-    print len(Results)
+    #print len(Results)
 
     #for each unique listing retrieve URL , postid , title, price and neighbourhood information
     for res in Results:
@@ -40,11 +44,11 @@ def Get_All_Listings(theUrl):
 
     #Get list of duplicate listings (just to verify that number of unique results + number of duplicates = total number of listings
     Duplicate = tree.xpath('//li[@class="result-row duplicate-row"]')
-    print len(Duplicate)
+    #print len(Duplicate)
 
     #Get total number of listings of URL
     Listings = tree.xpath('//a[@class="result-title hdrlnk"]')
-    print len(Listings)
+    #print len(Listings)
 
     return FinalList    
 
