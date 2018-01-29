@@ -48,11 +48,13 @@ class email_helper:
             msg['Subject'] = Subject
             msg['From'] = self.USERNAME
             msg['To'] = k
-        
-            text = MsgString.format(v)
 
-            msg.attach(MIMEText(text, 'plain'))
-            s.sendmail(self.USERNAME, k, msg.as_string())
+            text = MsgString.format(v)
+            try:
+                msg.attach(MIMEText(text, 'plain'))
+                s.sendmail(self.USERNAME, k, msg.as_string())
+            except:
+                print "Error sending" + Subject
 
         s.quit()
 
