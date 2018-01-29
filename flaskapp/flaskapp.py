@@ -70,9 +70,9 @@ scheduler = BackgroundScheduler()
 #scheduler.start()
 scheduler.add_job(
     func=send_notifications,
-    trigger=IntervalTrigger(minutes=1),
+    trigger=IntervalTrigger(minutes=30),
     id='notification_job',
-    name='Send notification for new posts every 5 mins',
+    name='Send notification for new posts every 30 mins',
     replace_existing=True)
 
 scheduler.add_job(
