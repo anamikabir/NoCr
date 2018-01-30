@@ -22,11 +22,12 @@ logging.basicConfig()
 ListingFile = "PostList.txt"
 
 currentListings = readfile(ListingFile)
-
+Lockcurr = False
 theUrl = "https://sfbay.craigslist.org/search/sfc/roo?hasPic=1&postedToday=1&bundleDuplicates=1&search_distance=2&postal=94103&min_price=800&max_price=1800&availabilityMode=0&private_room=1"
 
 # Function to send notifications for every new post
 def send_notifications():
+    global theUrl,ListingFile,Lockcurr,currentListings
     res =  Get_All_Listings(theUrl)
     DateToday = datetime.datetime.now()
     currDate = DateToday.day
@@ -50,9 +51,17 @@ def send_notifications():
             #print "Sending the email"+ EmailSubject
             myEmailHelper.create_mail_alert(EmailSubject,BodyContents)
     #print "Done with all records"
-    writefile(ListingFile,currentListings)
+    while True:
+        if not Lockcurr:
+            Lockcurr = True
+            print "Entering lock -- write into file"
+            writefile(ListingFile,currentListings)
+            Lockcurr = False
+            print "Exiting lock -- write into file"
+            break
 
 def del_old_contents():
+    global theUrl,ListingFile,Lockcurr,currentListings
     D = {}
     DateToday = datetime.datetime.now()
     currDate = DateToday.day
@@ -60,9 +69,17 @@ def del_old_contents():
     for k,v in currentListings.iteritems():
         if v == currDate:
            D[k]=v
+    print len(currentListings)
+    print len(D)
     currentListings = D
-    writefile(ListingFile,currentListings)
-
+    while True:
+        if not Lockcurr:
+            Lockcurr = True
+            print "Entering lock -- after deletion"
+            writefile(ListingFile,currentListings)
+            Lockcurr = False
+            print "Exiting lock -- after deletion"
+            break
 
 app = Flask(__name__)
 
@@ -70,14 +87,14 @@ scheduler = BackgroundScheduler()
 #scheduler.start()
 scheduler.add_job(
     func=send_notifications,
-    trigger=IntervalTrigger(minutes=30),
+    trigger=IntervalTrigger(minutes=1),
     id='notification_job',
     name='Send notification for new posts every 30 mins',
     replace_existing=True)
 
 scheduler.add_job(
     func=del_old_contents,
-    trigger=IntervalTrigger(hours=24),
+    trigger=IntervalTrigger(minutes=5),
     id='del_old_dict_job',
     name='Delete older post enteries - runs once every 24 hours',
     replace_existing=True)
