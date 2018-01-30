@@ -54,10 +54,10 @@ def send_notifications():
     while True:
         if not Lockcurr:
             Lockcurr = True
-            print "Entering lock -- write into file"
+            #print "Entering lock -- write into file"
             writefile(ListingFile,currentListings)
             Lockcurr = False
-            print "Exiting lock -- write into file"
+            #print "Exiting lock -- write into file"
             break
 
 def del_old_contents():
@@ -69,16 +69,16 @@ def del_old_contents():
     for k,v in currentListings.iteritems():
         if v == currDate:
            D[k]=v
-    print len(currentListings)
-    print len(D)
+    #print len(currentListings)
+    #print len(D)
     currentListings = D
     while True:
         if not Lockcurr:
             Lockcurr = True
-            print "Entering lock -- after deletion"
+            #print "Entering lock -- after deletion"
             writefile(ListingFile,currentListings)
             Lockcurr = False
-            print "Exiting lock -- after deletion"
+            #print "Exiting lock -- after deletion"
             break
 
 app = Flask(__name__)
@@ -87,14 +87,14 @@ scheduler = BackgroundScheduler()
 #scheduler.start()
 scheduler.add_job(
     func=send_notifications,
-    trigger=IntervalTrigger(minutes=1),
+    trigger=IntervalTrigger(minutes=5),
     id='notification_job',
     name='Send notification for new posts every 30 mins',
     replace_existing=True)
 
 scheduler.add_job(
     func=del_old_contents,
-    trigger=IntervalTrigger(minutes=5),
+    trigger=IntervalTrigger(minutes=30),
     id='del_old_dict_job',
     name='Delete older post enteries - runs once every 24 hours',
     replace_existing=True)
