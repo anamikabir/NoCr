@@ -50,14 +50,15 @@ class email_helper:
             msg['To'] = k
         
             text = MsgString.format(v)
-
-            msg.attach(MIMEText(text, 'plain'))
-            s.sendmail(self.USERNAME, k, msg.as_string())
-
+            try:
+                msg.attach(MIMEText(text, 'plain'))
+                s.sendmail(self.USERNAME, k, msg.as_string())
+            except:
+                print "Email couldn't be sent: "+Subject
         s.quit()
 
 
-"""
+
 myEmailHelper = email_helper()
 myEmailHelper.create_mail_alert("Alert","Hi {}!\nThis is a test email.\nHere is the link you wanted:\nhttps://www.python.org")
-"""
+
