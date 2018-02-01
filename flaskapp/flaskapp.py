@@ -89,14 +89,14 @@ scheduler.add_job(
     func=send_notifications,
     trigger=IntervalTrigger(minutes=5),
     id='notification_job',
-    name='Send notification for new posts every 30 mins',
+    name='Send notification for new posts every 5 mins',
     replace_existing=True)
 
 scheduler.add_job(
     func=del_old_contents,
     trigger=IntervalTrigger(minutes=30),
     id='del_old_dict_job',
-    name='Delete older post enteries - runs once every 24 hours',
+    name='Delete older post enteries - runs once every 30 mins',
     replace_existing=True)
 
 scheduler.start()
